@@ -1,0 +1,33 @@
+hash: 88aed5715a64e15e30238786dc551a610223c9058929be63eab03ceb41a2e96b
+updated: 2017-08-07T13:46:00.958141683+03:00
+imports:
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: bcd8bc72b08df0f70df986b97f95590779502d31
+- name: github.com/opencontainers/selinux
+  version: ba1aefe8057f1d0cfb8e88d0ec1dc85925ef987d
+  subpackages:
+  - go-selinux
+  - go-selinux/label
+- name: github.com/percona/pmm-manage
+  version: d8e52052ace74daeea2939c2da85694eca64320b
+  subpackages:
+  - configurator/config
+  - configurator/sshkey
+- name: github.com/sirupsen/logrus
+  version: a3f95b5c423586578a4e099b11a46c2479628cac
+- name: golang.org/x/crypto
+  version: 42ff06aea7c329876e5a0fe94acc96902accf0ad
+  subpackages:
+  - curve25519
+  - ed25519
+  - ed25519/internal/edwards25519
+  - ssh
+- name: golang.org/x/sys
+  version: d8f5ea21b9295e315e612b4bcf4bedea93454d4d
+  subpackages:
+  - unix
+- name: gopkg.in/yaml.v2
+  version: 25c4ec802a7d637f88d584ab26798e94ad14c13b
+testImports: []
