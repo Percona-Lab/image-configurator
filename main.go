@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -14,8 +13,9 @@ import (
 	"github.com/percona/pmm-manage/configurator/sshkey"
 )
 
-var c config.PMMConfig
+// SSHKey global variable with KeyPath and KeyOwner
 var SSHKey sshkey.Handler
+var c config.PMMConfig
 
 func main() {
 	c = config.ParseConfig()
@@ -31,13 +31,6 @@ func main() {
 		"address": c.ListenAddress,
 	}).Info("DB Configurator is started")
 	log.Fatal(http.ListenAndServe(c.ListenAddress, router))
-}
-
-func returnSuccess(w io.Writer) {
-	json.NewEncoder(w).Encode(jsonResponce{ // nolint: errcheck
-		Code:   http.StatusOK,
-		Status: http.StatusText(http.StatusOK),
-	})
 }
 
 func returnError(w http.ResponseWriter, req *http.Request, httpStatus int, title string, err error) {
