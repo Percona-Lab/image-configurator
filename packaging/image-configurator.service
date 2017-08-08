@@ -1,0 +1,13 @@
+[Unit]
+Description=Image Configurator API
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/sysconfig/image-configurator
+ExecStart=/usr/sbin/image-configurator $OPTIONS
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
