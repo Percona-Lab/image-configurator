@@ -2,10 +2,9 @@ package: github.com/Percona-Lab/image-configurator
 import:
 - package: github.com/gorilla/mux
   version: ^1.4.0
-- package: github.com/opencontainers/selinux
-  version: ^1.0.0-rc1
-  subpackages:
-  - go-selinux/label
 - package: github.com/sirupsen/logrus
   version: ^1.0.2
 - package: github.com/percona/pmm-manage
+  subpackages:
+  - configurator/config
+  - configurator/sshkey
