@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Percona Server for MySQL - Set Password</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="assets/favicon.ico" type="image/png">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="assets/ps-logo.png" style="width: 90%; max-width: 430px; margin-left: auto; margin-right: auto; display: block;">
+                        </div>
+                        <div class="col-md-offset-2 col-md-6">
+                            <h3 class="text-justify" style="font-size: 16px;">
+                                Welcome to the simplest installation process in the world. Just fill in the information and you will be able to use the fully compatible, enhanced, open source drop-in replacement for MySQL that provides superior performance, scalability and instrumentation.
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="form" class="col-md-12">
+                <form>
+                    <div class="col-md-12 form-group">
+                        <div class="input-group ssh">
+                            <span class="input-group-addon">SSH Public Key</span>
+                            <input id="sshkey" type="text" class="form-control" placeholder="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQ...">
+                        </div>
+                    </div>
+
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="glyphicon glyphicon-ok"></i>
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div id="success" class="col-md-12 hidden">
+                <p><center>You have successfully submitted SSH Public Key and can now access the PMM Server via SSH as the 'admin' user.</center></p>
+            <div>
+        </div>
+    </div>
+</body>
+
+<script>
+    function resetValidation() {
+        $("#sshkey").parent().removeClass("has-error has-success").addClass("has-feedback");
+        $("#sshkey").data('bs.tooltip', false);
+    }
+
+    $(function() {
+        $.get("/configurator/v1/sshkey").fail(function(jqXHR) {
+            if (jqXHR.status === 404) {
+               // cannot reach configurator -- key already exists
+               $("#form").addClass("hidden");
+               $("#success").removeClass("hidden")
+            }
+        })
+
+        $("#form").submit(function(event) {
+            event.preventDefault();
+            resetValidation();
+
+            if ($("#sshkey").val().length > 0) {
+                var postSSHKey = $.post("/configurator/v1/sshkey", JSON.stringify({
+                    "key": $("#sshkey").val()
+                }), null, "json");
+                postSSHKey.done(function() {
+                    $("#sshkey").parent().removeClass("has-error").addClass("has-success has-feedback");
+                    $("#form").addClass("hidden");
+                    $("#success").removeClass("hidden")
+                });
+                postSSHKey.fail(function(jqXHR) {
+                    console.log(jqXHR.status);
+                    console.log(jqXHR.responseText);
+
+                    if (jqXHR.status === 404) {
+                        // cannot reach configurator -- key already exists
+                        $("#form").addClass("hidden");
+                        $("#success").removeClass("hidden")
+                    } else {
+                        $("#sshkey").parent().removeClass("has-success").addClass("has-error has-feedback");
+                        $("#sshkey").tooltip({
+                            "trigger": "focus",
+                            "title": jqXHR.responseJSON.title
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</html>

@@ -51,6 +51,9 @@ install -p -m 0755 %{repo} %{buildroot}%{_sbindir}/%{repo}
 install -d %{buildroot}/usr/lib/systemd/system
 install -p -m 0644 packaging/%{repo}.service %{buildroot}/usr/lib/systemd/system/%{repo}.service
 
+install -d %{buildroot}%{_datadir}/%{name}
+cp -av ./landing-page %{buildroot}%{_datadir}/%{name}/
+
 
 %post
 %systemd_post %{name}.service
@@ -67,6 +70,7 @@ install -p -m 0644 packaging/%{repo}.service %{buildroot}/usr/lib/systemd/system
 %doc src/%{provider_prefix}/README.md
 %{_sbindir}/%{repo}
 /usr/lib/systemd/system/%{repo}.service
+%{_datadir}/%{name}
 
 
 %changelog
